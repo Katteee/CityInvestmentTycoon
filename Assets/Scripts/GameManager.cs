@@ -1,5 +1,6 @@
-using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,9 +12,12 @@ public class GameManager : MonoBehaviour
     public TMP_Text moneyText;
     public TMP_Text monthText;
 
+    private Camera mainCamera;
+
     private void Awake()
     {
         Instance = this;
+        mainCamera = Camera.main;
     }
 
     private void Start()
@@ -21,23 +25,47 @@ public class GameManager : MonoBehaviour
         UpdateUI();
     }
 
-    public void NextMonth()
+    private void Update()
     {
-        currentMonth++;
-        playerMoney += 500f;
-        UpdateUI();
-    }
-
-    public void BuyBusiness(float price)
-    {
-        if (playerMoney >= price)
+        if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
         {
-            playerMoney -= price;
-            UpdateUI();
+            Vector3 mouseWorldPos = mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+            Vector2 mousePos2D = new Vector2(mouseWorldPos.x, mouseWorldPos.y);
+
+            RaycastHit2D hit = Physics2D.Raycast(mousePos2D, Vector2.zero);
+
+            if (hit.collider != null)
+            {
+                Business business = hit.collider.GetComponent<Business>();
+
+                if (business != null)
+                {
+                    Debug.Log("Клік по: " + business.businessName);
+                    business.TryBuy();
+                    UpdateUI();
+                }
+            }
         }
     }
 
-    private void UpdateUI()
+    public void NextMonth()
+    {
+        currentMonth++;
+
+        Business[] allBusinesses = FindObjectsByType<Business>(FindObjectsSortMode.None);
+
+        foreach (Business business in allBusinesses)
+        {
+            if (business.IsOwned())
+            {
+                playerMoney += business.incomePerMonth;
+            }
+        }
+
+        UpdateUI();
+    }
+
+    public void UpdateUI()
     {
         if (moneyText != null)
             moneyText.text = "Money: " + playerMoney.ToString("F0");
