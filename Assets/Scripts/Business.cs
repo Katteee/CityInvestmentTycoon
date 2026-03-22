@@ -12,20 +12,21 @@ public class Business : MonoBehaviour
     private void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        UpdateVisual();
     }
 
-    public void TryBuy()
+    public bool TryBuy()
     {
         if (GameManager.Instance == null)
         {
             Debug.LogError("GameManager not found");
-            return;
+            return false;
         }
 
         if (isOwned)
         {
             Debug.Log(businessName + " вже куплений");
-            return;
+            return false;
         }
 
         if (GameManager.Instance.playerMoney >= price)
@@ -33,19 +34,38 @@ public class Business : MonoBehaviour
             GameManager.Instance.playerMoney -= price;
             isOwned = true;
 
-            if (spriteRenderer != null)
-                spriteRenderer.color = Color.green;
+            UpdateVisual();
 
             Debug.Log("Куплено: " + businessName);
+            return true;
         }
         else
         {
             Debug.Log("Недостатньо грошей");
+            return false;
         }
     }
 
     public bool IsOwned()
     {
         return isOwned;
+    }
+
+    public string GetInfo()
+    {
+        string status = isOwned ? "Owned" : "Not owned";
+
+        return "Business: " + businessName +
+               "\nPrice: " + price.ToString("F0") +
+               "\nIncome/Month: " + incomePerMonth.ToString("F0") +
+               "\nStatus: " + status;
+    }
+
+    private void UpdateVisual()
+    {
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.color = isOwned ? Color.green : Color.white;
+        }
     }
 }

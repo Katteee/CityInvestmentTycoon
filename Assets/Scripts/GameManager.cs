@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,8 +12,11 @@ public class GameManager : MonoBehaviour
 
     public TMP_Text moneyText;
     public TMP_Text monthText;
+    public TMP_Text selectedBusinessText;
+    public Button buyButton;
 
     private Camera mainCamera;
+    private Business selectedBusiness;
 
     private void Awake()
     {
@@ -23,6 +27,11 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         UpdateUI();
+
+        if (selectedBusinessText != null)
+            selectedBusinessText.text = "Selected business: none";
+
+        UpdateBuyButton();
     }
 
     private void Update()
@@ -40,12 +49,34 @@ public class GameManager : MonoBehaviour
 
                 if (business != null)
                 {
-                    Debug.Log("Клік по: " + business.businessName);
-                    business.TryBuy();
-                    UpdateUI();
+                    selectedBusiness = business;
+
+                    if (selectedBusinessText != null)
+                        selectedBusinessText.text = business.GetInfo();
+
+                    Debug.Log("Вибрано: " + business.businessName);
+                    UpdateBuyButton();
                 }
             }
         }
+    }
+
+    public void BuySelectedBusiness()
+    {
+        if (selectedBusiness == null)
+            return;
+
+        bool bought = selectedBusiness.TryBuy();
+
+        if (bought)
+        {
+            UpdateUI();
+
+            if (selectedBusinessText != null)
+                selectedBusinessText.text = selectedBusiness.GetInfo();
+        }
+
+        UpdateBuyButton();
     }
 
     public void NextMonth()
@@ -63,6 +94,11 @@ public class GameManager : MonoBehaviour
         }
 
         UpdateUI();
+
+        if (selectedBusiness != null && selectedBusinessText != null)
+            selectedBusinessText.text = selectedBusiness.GetInfo();
+
+        Debug.Log("Next month clicked");
     }
 
     public void UpdateUI()
@@ -72,5 +108,19 @@ public class GameManager : MonoBehaviour
 
         if (monthText != null)
             monthText.text = "Month: " + currentMonth;
+    }
+
+    private void UpdateBuyButton()
+    {
+        if (buyButton == null)
+            return;
+
+        if (selectedBusiness == null)
+        {
+            buyButton.interactable = false;
+            return;
+        }
+
+        buyButton.interactable = !selectedBusiness.IsOwned();
     }
 }
