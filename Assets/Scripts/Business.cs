@@ -1,5 +1,12 @@
 using UnityEngine;
 
+public enum BusinessOwner
+{
+    None,
+    Player,
+    AI
+}
+
 public class Business : MonoBehaviour
 {
     public string businessName;
@@ -10,16 +17,49 @@ public class Business : MonoBehaviour
     public float incomePerMonth = 200f;
     public float upgradeCost = 500f;
 
-    [SerializeField] private bool isOwned = false;
+    [SerializeField] private BusinessOwner owner = BusinessOwner.None;
     private SpriteRenderer spriteRenderer;
+
+    private Vector3 normalScale;
+    private Vector3 targetScale;
+    public float selectedScaleMultiplier = 1.15f;
+    public float scaleSmoothSpeed = 5f;
 
     private void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        normalScale = transform.localScale;
+        targetScale = normalScale;
+
         UpdateVisual();
     }
 
-    public bool TryBuy()
+    private void Update()
+    {
+        AnimateSelection();
+    }
+
+    private void AnimateSelection()
+    {
+        if (GameManager.Instance == null)
+            return;
+
+        Business selected = GameManager.Instance.GetSelectedBusiness();
+
+        if (selected == this)
+            targetScale = normalScale * selectedScaleMultiplier;
+        else
+            targetScale = normalScale;
+
+        transform.localScale = Vector3.Lerp(
+            transform.localScale,
+            targetScale,
+            Time.deltaTime * scaleSmoothSpeed
+        );
+    }
+
+    public bool TryBuyPlayer()
     {
         if (GameManager.Instance == null)
         {
@@ -27,40 +67,37 @@ public class Business : MonoBehaviour
             return false;
         }
 
-        if (isOwned)
+        if (owner != BusinessOwner.None)
         {
-            Debug.Log(businessName + " вже куплений");
+            Debug.Log(businessName + " already owned");
             return false;
         }
 
         if (GameManager.Instance.playerMoney >= price)
         {
             GameManager.Instance.playerMoney -= price;
-            isOwned = true;
-
+            owner = BusinessOwner.Player;
             UpdateVisual();
 
-            Debug.Log("Куплено: " + businessName);
+            Debug.Log("Player bought: " + businessName);
             return true;
         }
-        else
-        {
-            Debug.Log("Недостатньо грошей");
-            return false;
-        }
+
+        Debug.Log("Not enough money");
+        return false;
     }
 
-    public bool TryUpgrade()
+    public bool TryUpgradePlayer()
     {
-        if (!isOwned)
-        {
-            Debug.Log("Спочатку купи бізнес");
-            return false;
-        }
-
         if (GameManager.Instance == null)
         {
             Debug.LogError("GameManager not found");
+            return false;
+        }
+
+        if (owner != BusinessOwner.Player)
+        {
+            Debug.Log("Only player-owned business can be upgraded");
             return false;
         }
 
@@ -72,24 +109,89 @@ public class Business : MonoBehaviour
             incomePerMonth += 150f;
             upgradeCost += 300f;
 
-            Debug.Log("Покращено: " + businessName + " до рівня " + level);
+            UpdateVisual();
+            Debug.Log("Player upgraded: " + businessName + " to level " + level);
             return true;
         }
-        else
+
+        Debug.Log("Not enough money for upgrade");
+        return false;
+    }
+
+    public bool TryBuyAI()
+    {
+        if (GameManager.Instance == null)
         {
-            Debug.Log("Недостатньо грошей для upgrade");
+            Debug.LogError("GameManager not found");
             return false;
         }
+
+        if (owner != BusinessOwner.None)
+            return false;
+
+        if (GameManager.Instance.aiMoney >= price)
+        {
+            GameManager.Instance.aiMoney -= price;
+            owner = BusinessOwner.AI;
+            UpdateVisual();
+
+            Debug.Log("AI bought: " + businessName);
+            return true;
+        }
+
+        return false;
+    }
+
+    public bool TryUpgradeAI()
+    {
+        if (GameManager.Instance == null)
+        {
+            Debug.LogError("GameManager not found");
+            return false;
+        }
+
+        if (owner != BusinessOwner.AI)
+            return false;
+
+        if (GameManager.Instance.aiMoney >= upgradeCost)
+        {
+            GameManager.Instance.aiMoney -= upgradeCost;
+
+            level++;
+            incomePerMonth += 150f;
+            upgradeCost += 300f;
+
+            UpdateVisual();
+            Debug.Log("AI upgraded: " + businessName + " to level " + level);
+            return true;
+        }
+
+        return false;
     }
 
     public bool IsOwned()
     {
-        return isOwned;
+        return owner != BusinessOwner.None;
     }
 
-    public void SetSaveData(bool owned, int newLevel, float newIncome, float newUpgradeCost)
+    public bool IsOwnedByPlayer()
     {
-        isOwned = owned;
+        return owner == BusinessOwner.Player;
+    }
+
+    public bool IsOwnedByAI()
+    {
+        return owner == BusinessOwner.AI;
+    }
+
+    public BusinessOwner GetOwner()
+    {
+        return owner;
+    }
+
+    public void SetSaveData(string ownerString, int newLevel, float newIncome, float newUpgradeCost)
+    {
+        owner = StringToOwner(ownerString);
         level = newLevel;
         incomePerMonth = newIncome;
         upgradeCost = newUpgradeCost;
@@ -98,7 +200,7 @@ public class Business : MonoBehaviour
 
     public void ResetBusiness()
     {
-        isOwned = false;
+        owner = BusinessOwner.None;
         level = 1;
         incomePerMonth = baseIncomePerMonth;
         upgradeCost = 500f;
@@ -107,7 +209,12 @@ public class Business : MonoBehaviour
 
     public string GetInfo()
     {
-        string status = isOwned ? "Owned" : "Not owned";
+        string status = owner switch
+        {
+            BusinessOwner.Player => "Owned by Player",
+            BusinessOwner.AI => "Owned by AI",
+            _ => "Not owned"
+        };
 
         return "Business: " + businessName +
                "\nStatus: " + status +
@@ -124,7 +231,43 @@ public class Business : MonoBehaviour
 
         if (spriteRenderer != null)
         {
-            spriteRenderer.color = isOwned ? Color.green : Color.white;
+            switch (owner)
+            {
+                case BusinessOwner.Player:
+                    spriteRenderer.color = Color.green;
+                    break;
+                case BusinessOwner.AI:
+                    spriteRenderer.color = Color.red;
+                    break;
+                default:
+                    spriteRenderer.color = Color.white;
+                    break;
+            }
         }
+    }
+
+    private string OwnerToString(BusinessOwner value)
+    {
+        return value switch
+        {
+            BusinessOwner.Player => "Player",
+            BusinessOwner.AI => "AI",
+            _ => "None"
+        };
+    }
+
+    private BusinessOwner StringToOwner(string value)
+    {
+        return value switch
+        {
+            "Player" => BusinessOwner.Player,
+            "AI" => BusinessOwner.AI,
+            _ => BusinessOwner.None
+        };
+    }
+
+    public string GetOwnerString()
+    {
+        return OwnerToString(owner);
     }
 }

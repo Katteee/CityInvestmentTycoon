@@ -5,7 +5,7 @@ using UnityEngine;
 public class BusinessSaveData
 {
     public string businessName;
-    public bool isOwned;
+    public string owner;
     public int level;
     public float incomePerMonth;
     public float upgradeCost;
@@ -14,8 +14,9 @@ public class BusinessSaveData
 [System.Serializable]
 public class GameSaveData
 {
-     public int currentLevel;
+    public int currentLevel;
     public float playerMoney;
+    public float aiMoney;
     public int currentMonth;
     public BusinessSaveData[] businesses;
 }
@@ -28,6 +29,7 @@ public static class SaveSystem
     {
         GameSaveData data = new GameSaveData();
         data.playerMoney = gameManager.playerMoney;
+        data.aiMoney = gameManager.aiMoney;
         data.currentMonth = gameManager.currentMonth;
         data.currentLevel = gameManager.currentLevel;
 
@@ -38,7 +40,7 @@ public static class SaveSystem
             data.businesses[i] = new BusinessSaveData
             {
                 businessName = businesses[i].businessName,
-                isOwned = businesses[i].IsOwned(),
+                owner = businesses[i].GetOwnerString(),
                 level = businesses[i].level,
                 incomePerMonth = businesses[i].incomePerMonth,
                 upgradeCost = businesses[i].upgradeCost
