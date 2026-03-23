@@ -7,11 +7,35 @@ public enum BusinessOwner
     AI
 }
 
+public enum BusinessType
+{
+    Cafe,
+    Shop,
+    Office,
+    Factory,
+    Mall,
+    RentalProperty
+}
+
 public class Business : MonoBehaviour
 {
     public string businessName;
+    public BusinessType businessType;
+
     public float price = 1000f;
     public float baseIncomePerMonth = 200f;
+    public float monthlyCost = 50f;
+
+    [Range(0.5f, 2f)]
+    public float popularity = 1f;
+
+    public int qualityLevel = 1;
+
+    [Range(0f, 1f)]
+    public float bankruptcyRisk = 0.05f;
+
+    [Range(0f, 1f)]
+    public float competitionImpact = 0.1f;
 
     public int level = 1;
     public float incomePerMonth = 200f;
@@ -32,6 +56,7 @@ public class Business : MonoBehaviour
         normalScale = transform.localScale;
         targetScale = normalScale;
 
+        RecalculateStats();
         UpdateVisual();
     }
 
@@ -59,72 +84,86 @@ public class Business : MonoBehaviour
         );
     }
 
+    public void RecalculateStats()
+    {
+        float qualityMultiplier = 1f + (qualityLevel - 1) * 0.15f;
+        float competitionPenalty = baseIncomePerMonth * competitionImpact;
+        incomePerMonth = (baseIncomePerMonth * popularity * qualityMultiplier) - monthlyCost - competitionPenalty;
+
+        if (incomePerMonth < 0f)
+            incomePerMonth = 0f;
+
+        UpdateBankruptcyRisk();
+    }
+
+    private void UpdateBankruptcyRisk()
+    {
+        float risk = 0.05f;
+
+        if (incomePerMonth < monthlyCost)
+            risk += 0.15f;
+
+        risk += competitionImpact * 0.2f;
+
+        if (qualityLevel <= 1)
+            risk += 0.05f;
+
+        bankruptcyRisk = Mathf.Clamp01(risk);
+    }
+
+    public float GetProfit()
+    {
+        return incomePerMonth;
+    }
+
     public bool TryBuyPlayer()
     {
         if (GameManager.Instance == null)
-        {
-            Debug.LogError("GameManager not found");
             return false;
-        }
 
         if (owner != BusinessOwner.None)
-        {
-            Debug.Log(businessName + " already owned");
             return false;
-        }
 
         if (GameManager.Instance.playerMoney >= price)
         {
             GameManager.Instance.playerMoney -= price;
             owner = BusinessOwner.Player;
             UpdateVisual();
-
-            Debug.Log("Player bought: " + businessName);
             return true;
         }
 
-        Debug.Log("Not enough money");
         return false;
     }
 
     public bool TryUpgradePlayer()
     {
         if (GameManager.Instance == null)
-        {
-            Debug.LogError("GameManager not found");
             return false;
-        }
 
         if (owner != BusinessOwner.Player)
-        {
-            Debug.Log("Only player-owned business can be upgraded");
             return false;
-        }
 
         if (GameManager.Instance.playerMoney >= upgradeCost)
         {
             GameManager.Instance.playerMoney -= upgradeCost;
 
             level++;
-            incomePerMonth += 150f;
+            qualityLevel++;
+            popularity += 0.1f;
             upgradeCost += 300f;
 
+            RecalculateStats();
             UpdateVisual();
-            Debug.Log("Player upgraded: " + businessName + " to level " + level);
             return true;
         }
 
-        Debug.Log("Not enough money for upgrade");
         return false;
     }
 
     public bool TryBuyAI()
     {
         if (GameManager.Instance == null)
-        {
-            Debug.LogError("GameManager not found");
             return false;
-        }
 
         if (owner != BusinessOwner.None)
             return false;
@@ -134,8 +173,6 @@ public class Business : MonoBehaviour
             GameManager.Instance.aiMoney -= price;
             owner = BusinessOwner.AI;
             UpdateVisual();
-
-            Debug.Log("AI bought: " + businessName);
             return true;
         }
 
@@ -145,10 +182,7 @@ public class Business : MonoBehaviour
     public bool TryUpgradeAI()
     {
         if (GameManager.Instance == null)
-        {
-            Debug.LogError("GameManager not found");
             return false;
-        }
 
         if (owner != BusinessOwner.AI)
             return false;
@@ -158,11 +192,12 @@ public class Business : MonoBehaviour
             GameManager.Instance.aiMoney -= upgradeCost;
 
             level++;
-            incomePerMonth += 150f;
+            qualityLevel++;
+            popularity += 0.1f;
             upgradeCost += 300f;
 
+            RecalculateStats();
             UpdateVisual();
-            Debug.Log("AI upgraded: " + businessName + " to level " + level);
             return true;
         }
 
@@ -184,17 +219,26 @@ public class Business : MonoBehaviour
         return owner == BusinessOwner.AI;
     }
 
-    public BusinessOwner GetOwner()
+    public string GetOwnerString()
     {
-        return owner;
+        return owner.ToString();
     }
 
     public void SetSaveData(string ownerString, int newLevel, float newIncome, float newUpgradeCost)
     {
-        owner = StringToOwner(ownerString);
+        owner = ownerString switch
+        {
+            "Player" => BusinessOwner.Player,
+            "AI" => BusinessOwner.AI,
+            _ => BusinessOwner.None
+        };
+
         level = newLevel;
+        qualityLevel = newLevel;
         incomePerMonth = newIncome;
         upgradeCost = newUpgradeCost;
+
+        UpdateBankruptcyRisk();
         UpdateVisual();
     }
 
@@ -202,8 +246,11 @@ public class Business : MonoBehaviour
     {
         owner = BusinessOwner.None;
         level = 1;
-        incomePerMonth = baseIncomePerMonth;
+        qualityLevel = 1;
+        popularity = 1f;
         upgradeCost = 500f;
+
+        RecalculateStats();
         UpdateVisual();
     }
 
@@ -217,10 +264,17 @@ public class Business : MonoBehaviour
         };
 
         return "Business: " + businessName +
+               "\nType: " + businessType +
                "\nStatus: " + status +
                "\nLevel: " + level +
                "\nBuy Price: " + price.ToString("F0") +
-               "\nIncome/Month: " + incomePerMonth.ToString("F0") +
+               "\nIncome: " + baseIncomePerMonth.ToString("F0") +
+               "\nCosts: " + monthlyCost.ToString("F0") +
+               "\nProfit: " + GetProfit().ToString("F0") +
+               "\nPopularity: " + popularity.ToString("F2") +
+               "\nQuality: " + qualityLevel +
+               "\nBankruptcy Risk: " + (bankruptcyRisk * 100f).ToString("F0") + "%" +
+               "\nCompetition Impact: " + (competitionImpact * 100f).ToString("F0") + "%" +
                "\nUpgrade Cost: " + upgradeCost.ToString("F0");
     }
 
@@ -244,30 +298,5 @@ public class Business : MonoBehaviour
                     break;
             }
         }
-    }
-
-    private string OwnerToString(BusinessOwner value)
-    {
-        return value switch
-        {
-            BusinessOwner.Player => "Player",
-            BusinessOwner.AI => "AI",
-            _ => "None"
-        };
-    }
-
-    private BusinessOwner StringToOwner(string value)
-    {
-        return value switch
-        {
-            "Player" => BusinessOwner.Player,
-            "AI" => BusinessOwner.AI,
-            _ => BusinessOwner.None
-        };
-    }
-
-    public string GetOwnerString()
-    {
-        return OwnerToString(owner);
     }
 }
