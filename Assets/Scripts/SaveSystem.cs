@@ -9,14 +9,22 @@ public class BusinessSaveData
     public int level;
     public float incomePerMonth;
     public float upgradeCost;
+    public float servicePrice;
 }
 
 [System.Serializable]
 public class GameSaveData
 {
     public int currentLevel;
+    public int highestUnlockedLevel;
+    public float highScore;
+
     public float playerMoney;
     public float aiMoney;
+
+    public float playerDebt;
+    public float aiDebt;
+
     public int currentMonth;
     public BusinessSaveData[] businesses;
 }
@@ -30,8 +38,12 @@ public static class SaveSystem
         GameSaveData data = new GameSaveData();
         data.playerMoney = gameManager.playerMoney;
         data.aiMoney = gameManager.aiMoney;
+        data.playerDebt = gameManager.playerDebt;
+        data.aiDebt = gameManager.aiDebt;
         data.currentMonth = gameManager.currentMonth;
         data.currentLevel = gameManager.currentLevel;
+        data.highScore = gameManager.highScore;
+        data.highestUnlockedLevel = gameManager.highestUnlockedLevel;
 
         data.businesses = new BusinessSaveData[businesses.Length];
 
@@ -43,7 +55,8 @@ public static class SaveSystem
                 owner = businesses[i].GetOwnerString(),
                 level = businesses[i].level,
                 incomePerMonth = businesses[i].incomePerMonth,
-                upgradeCost = businesses[i].upgradeCost
+                upgradeCost = businesses[i].upgradeCost,
+                servicePrice = businesses[i].servicePrice
             };
         }
 

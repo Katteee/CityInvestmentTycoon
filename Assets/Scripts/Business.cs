@@ -41,6 +41,11 @@ public class Business : MonoBehaviour
     public float incomePerMonth = 200f;
     public float upgradeCost = 500f;
 
+    public float servicePrice = 1f;
+    public float minServicePrice = 0.5f;
+    public float maxServicePrice = 2f;
+    public float priceStep = 0.1f;
+
     [SerializeField] private BusinessOwner owner = BusinessOwner.None;
     private SpriteRenderer spriteRenderer;
 
@@ -87,8 +92,16 @@ public class Business : MonoBehaviour
     public void RecalculateStats()
     {
         float qualityMultiplier = 1f + (qualityLevel - 1) * 0.15f;
+
+        float priceDemandFactor = 1.2f - (servicePrice - 1f) * 0.6f;
+        priceDemandFactor = Mathf.Clamp(priceDemandFactor, 0.6f, 1.4f);
+
         float competitionPenalty = baseIncomePerMonth * competitionImpact;
-        incomePerMonth = (baseIncomePerMonth * popularity * qualityMultiplier) - monthlyCost - competitionPenalty;
+
+        incomePerMonth =
+            (baseIncomePerMonth * servicePrice * popularity * qualityMultiplier * priceDemandFactor)
+            - monthlyCost
+            - competitionPenalty;
 
         if (incomePerMonth < 0f)
             incomePerMonth = 0f;
@@ -107,6 +120,9 @@ public class Business : MonoBehaviour
 
         if (qualityLevel <= 1)
             risk += 0.05f;
+
+        if (servicePrice > 1.6f)
+            risk += 0.1f;
 
         bankruptcyRisk = Mathf.Clamp01(risk);
     }
@@ -133,6 +149,29 @@ public class Business : MonoBehaviour
         }
 
         return false;
+    }
+
+    public bool TrySellPlayer()
+    {
+        if (GameManager.Instance == null)
+            return false;
+
+        if (owner != BusinessOwner.Player)
+            return false;
+
+        float sellValue = price * (0.6f + level * 0.1f);
+        GameManager.Instance.playerMoney += sellValue;
+
+        owner = BusinessOwner.None;
+        level = 1;
+        qualityLevel = 1;
+        popularity = 1f;
+        servicePrice = 1f;
+        upgradeCost = 500f;
+
+        RecalculateStats();
+        UpdateVisual();
+        return true;
     }
 
     public bool TryUpgradePlayer()
@@ -204,6 +243,20 @@ public class Business : MonoBehaviour
         return false;
     }
 
+    public void IncreasePrice()
+    {
+        servicePrice += priceStep;
+        servicePrice = Mathf.Clamp(servicePrice, minServicePrice, maxServicePrice);
+        RecalculateStats();
+    }
+
+    public void DecreasePrice()
+    {
+        servicePrice -= priceStep;
+        servicePrice = Mathf.Clamp(servicePrice, minServicePrice, maxServicePrice);
+        RecalculateStats();
+    }
+
     public bool IsOwned()
     {
         return owner != BusinessOwner.None;
@@ -224,7 +277,7 @@ public class Business : MonoBehaviour
         return owner.ToString();
     }
 
-    public void SetSaveData(string ownerString, int newLevel, float newIncome, float newUpgradeCost)
+    public void SetSaveData(string ownerString, int newLevel, float newIncome, float newUpgradeCost, float newServicePrice)
     {
         owner = ownerString switch
         {
@@ -237,6 +290,7 @@ public class Business : MonoBehaviour
         qualityLevel = newLevel;
         incomePerMonth = newIncome;
         upgradeCost = newUpgradeCost;
+        servicePrice = newServicePrice;
 
         UpdateBankruptcyRisk();
         UpdateVisual();
@@ -248,6 +302,7 @@ public class Business : MonoBehaviour
         level = 1;
         qualityLevel = 1;
         popularity = 1f;
+        servicePrice = 1f;
         upgradeCost = 500f;
 
         RecalculateStats();
@@ -268,6 +323,7 @@ public class Business : MonoBehaviour
                "\nStatus: " + status +
                "\nLevel: " + level +
                "\nBuy Price: " + price.ToString("F0") +
+               "\nService Price: " + servicePrice.ToString("F1") +
                "\nIncome: " + baseIncomePerMonth.ToString("F0") +
                "\nCosts: " + monthlyCost.ToString("F0") +
                "\nProfit: " + GetProfit().ToString("F0") +
