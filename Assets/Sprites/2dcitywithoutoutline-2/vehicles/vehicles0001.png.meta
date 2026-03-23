@@ -1,0 +1,572 @@
+fileFormatVersion: 2
+guid: f541ea52ab1314607ba8dc12e9787aeb
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 2073210342361776952
+    second: vehicles0001_0
+  - first:
+      213: -5381254167084421149
+    second: vehicles0001_1
+  - first:
+      213: -4415957269403660040
+    second: vehicles0001_2
+  - first:
+      213: -1137399718161535939
+    second: vehicles0001_3
+  - first:
+      213: 6761621957994581950
+    second: vehicles0001_4
+  - first:
+      213: 926261522428322860
+    second: vehicles0001_5
+  - first:
+      213: -3803146775699105358
+    second: vehicles0001_6
+  - first:
+      213: -8614711721080675130
+    second: vehicles0001_7
+  - first:
+      213: 8629595102563451970
+    second: vehicles0001_8
+  - first:
+      213: -1114472722730787314
+    second: vehicles0001_9
+  - first:
+      213: 2782731419591093731
+    second: vehicles0001_10
+  - first:
+      213: -7745266090032016311
+    second: vehicles0001_11
+  - first:
+      213: -5631797218610786279
+    second: vehicles0001_12
+  - first:
+      213: -8584520769930804713
+    second: vehicles0001_13
+  - first:
+      213: -8733133310318841976
+    second: vehicles0001_14
+  - first:
+      213: -2711229889951384014
+    second: vehicles0001_15
+  - first:
+      213: -3473945165192368250
+    second: vehicles0001_16
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: vehicles0001_0
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 1435
+        width: 516
+        height: 479
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 833c32172d585cc10800000000000000
+      internalID: 2073210342361776952
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: vehicles0001_1
+      rect:
+        serializedVersion: 2
+        x: 802
+        y: 1504
+        width: 522
+        height: 371
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3efa7dc98d1f155b0800000000000000
+      internalID: -5381254167084421149
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: vehicles0001_2
+      rect:
+        serializedVersion: 2
+        x: 1441
+        y: 1485
+        width: 530
+        height: 363
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f014ed924e57b2c0800000000000000
+      internalID: -4415957269403660040
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: vehicles0001_3
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 856
+        width: 513
+        height: 345
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d3c2a578bf42730f0800000000000000
+      internalID: -1137399718161535939
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: vehicles0001_4
+      rect:
+        serializedVersion: 2
+        x: 846
+        y: 842
+        width: 530
+        height: 361
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ebf8fbf985b16dd50800000000000000
+      internalID: 6761621957994581950
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: vehicles0001_5
+      rect:
+        serializedVersion: 2
+        x: 1547
+        y: 875
+        width: 413
+        height: 259
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c24e37572fdbadc00800000000000000
+      internalID: 926261522428322860
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: vehicles0001_6
+      rect:
+        serializedVersion: 2
+        x: 93
+        y: 395
+        width: 412
+        height: 260
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b958cd4822883bc0800000000000000
+      internalID: -3803146775699105358
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: vehicles0001_7
+      rect:
+        serializedVersion: 2
+        x: 599
+        y: 418
+        width: 254
+        height: 211
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6c4a7961555627880800000000000000
+      internalID: -8614711721080675130
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: vehicles0001_8
+      rect:
+        serializedVersion: 2
+        x: 980
+        y: 419
+        width: 245
+        height: 216
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 244ceb3360b72c770800000000000000
+      internalID: 8629595102563451970
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: vehicles0001_9
+      rect:
+        serializedVersion: 2
+        x: 1344
+        y: 413
+        width: 244
+        height: 216
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e0ed4c1a6f89880f0800000000000000
+      internalID: -1114472722730787314
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: vehicles0001_10
+      rect:
+        serializedVersion: 2
+        x: 1746
+        y: 592
+        width: 211
+        height: 109
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3edab0a8b7f3e9620800000000000000
+      internalID: 2782731419591093731
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: vehicles0001_11
+      rect:
+        serializedVersion: 2
+        x: 1742
+        y: 356
+        width: 212
+        height: 108
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 94453ccf689438490800000000000000
+      internalID: -7745266090032016311
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: vehicles0001_12
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 104
+        width: 309
+        height: 184
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 910dba9a446d7d1b0800000000000000
+      internalID: -5631797218610786279
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: vehicles0001_13
+      rect:
+        serializedVersion: 2
+        x: 431
+        y: 93
+        width: 310
+        height: 184
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 712cf4da7d7add880800000000000000
+      internalID: -8584520769930804713
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: vehicles0001_14
+      rect:
+        serializedVersion: 2
+        x: 853
+        y: 95
+        width: 331
+        height: 121
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 88f605e368dadc680800000000000000
+      internalID: -8733133310318841976
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: vehicles0001_15
+      rect:
+        serializedVersion: 2
+        x: 1287
+        y: 63
+        width: 250
+        height: 149
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 23eb601a7c6cf5ad0800000000000000
+      internalID: -2711229889951384014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: vehicles0001_16
+      rect:
+        serializedVersion: 2
+        x: 1685
+        y: 60
+        width: 253
+        height: 206
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 68fe58b27411acfc0800000000000000
+      internalID: -3473945165192368250
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      vehicles0001_0: 2073210342361776952
+      vehicles0001_1: -5381254167084421149
+      vehicles0001_10: 2782731419591093731
+      vehicles0001_11: -7745266090032016311
+      vehicles0001_12: -5631797218610786279
+      vehicles0001_13: -8584520769930804713
+      vehicles0001_14: -8733133310318841976
+      vehicles0001_15: -2711229889951384014
+      vehicles0001_16: -3473945165192368250
+      vehicles0001_2: -4415957269403660040
+      vehicles0001_3: -1137399718161535939
+      vehicles0001_4: 6761621957994581950
+      vehicles0001_5: 926261522428322860
+      vehicles0001_6: -3803146775699105358
+      vehicles0001_7: -8614711721080675130
+      vehicles0001_8: 8629595102563451970
+      vehicles0001_9: -1114472722730787314
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

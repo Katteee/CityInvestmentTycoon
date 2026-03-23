@@ -1,0 +1,572 @@
+fileFormatVersion: 2
+guid: decbdd669c436490bbc74c6edab31295
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -3055874151886377052
+    second: citysecondcityprops0007_0
+  - first:
+      213: 250746877089306834
+    second: citysecondcityprops0007_1
+  - first:
+      213: -203138503487930734
+    second: citysecondcityprops0007_2
+  - first:
+      213: 1933435051491479699
+    second: citysecondcityprops0007_3
+  - first:
+      213: 5511052311381189360
+    second: citysecondcityprops0007_4
+  - first:
+      213: -5433144502488786344
+    second: citysecondcityprops0007_5
+  - first:
+      213: -4682154516866495470
+    second: citysecondcityprops0007_6
+  - first:
+      213: -8521981718441231819
+    second: citysecondcityprops0007_7
+  - first:
+      213: -427396668223070250
+    second: citysecondcityprops0007_8
+  - first:
+      213: 1231047505849618696
+    second: citysecondcityprops0007_9
+  - first:
+      213: -1730431196241996659
+    second: citysecondcityprops0007_10
+  - first:
+      213: -4117578778651656061
+    second: citysecondcityprops0007_11
+  - first:
+      213: -6431825627441696348
+    second: citysecondcityprops0007_12
+  - first:
+      213: -5331528513925610322
+    second: citysecondcityprops0007_13
+  - first:
+      213: -5220904083578588884
+    second: citysecondcityprops0007_14
+  - first:
+      213: 8388619552248973684
+    second: citysecondcityprops0007_15
+  - first:
+      213: -4814995390508119148
+    second: citysecondcityprops0007_16
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: citysecondcityprops0007_0
+      rect:
+        serializedVersion: 2
+        x: 262
+        y: 1493
+        width: 225
+        height: 485
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4afa38a46aa5795d0800000000000000
+      internalID: -3055874151886377052
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: citysecondcityprops0007_1
+      rect:
+        serializedVersion: 2
+        x: 882
+        y: 1495
+        width: 225
+        height: 485
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d85279c4f4da7300800000000000000
+      internalID: 250746877089306834
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: citysecondcityprops0007_2
+      rect:
+        serializedVersion: 2
+        x: 1672
+        y: 1346
+        width: 91
+        height: 660
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 29eb56b7b9e4e2df0800000000000000
+      internalID: -203138503487930734
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: citysecondcityprops0007_3
+      rect:
+        serializedVersion: 2
+        x: 250
+        y: 737
+        width: 237
+        height: 547
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 39050708fe0f4da10800000000000000
+      internalID: 1933435051491479699
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: citysecondcityprops0007_4
+      rect:
+        serializedVersion: 2
+        x: 902
+        y: 1098
+        width: 294
+        height: 223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f2a87ed0e03b7c40800000000000000
+      internalID: 5511052311381189360
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: citysecondcityprops0007_5
+      rect:
+        serializedVersion: 2
+        x: 1420
+        y: 1049
+        width: 56
+        height: 123
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 85a1acb6cd79994b0800000000000000
+      internalID: -5433144502488786344
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: citysecondcityprops0007_6
+      rect:
+        serializedVersion: 2
+        x: 1531
+        y: 1047
+        width: 151
+        height: 91
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 21c8ea62645a50fb0800000000000000
+      internalID: -4682154516866495470
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: citysecondcityprops0007_7
+      rect:
+        serializedVersion: 2
+        x: 1799
+        y: 1058
+        width: 30
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 53affe947c6dbb980800000000000000
+      internalID: -8521981718441231819
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: citysecondcityprops0007_8
+      rect:
+        serializedVersion: 2
+        x: 1846
+        y: 1058
+        width: 30
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6dfd064aef4911af0800000000000000
+      internalID: -427396668223070250
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: citysecondcityprops0007_9
+      rect:
+        serializedVersion: 2
+        x: 1893
+        y: 1058
+        width: 30
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8011cc72f2f851110800000000000000
+      internalID: 1231047505849618696
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: citysecondcityprops0007_10
+      rect:
+        serializedVersion: 2
+        x: 1940
+        y: 1058
+        width: 31
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d84ddb7cef54cf7e0800000000000000
+      internalID: -1730431196241996659
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: citysecondcityprops0007_11
+      rect:
+        serializedVersion: 2
+        x: 1987
+        y: 1058
+        width: 31
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 38008cbaaeb6bd6c0800000000000000
+      internalID: -4117578778651656061
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: citysecondcityprops0007_12
+      rect:
+        serializedVersion: 2
+        x: 790
+        y: 637
+        width: 468
+        height: 291
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4a1751b4ba09db6a0800000000000000
+      internalID: -6431825627441696348
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: citysecondcityprops0007_13
+      rect:
+        serializedVersion: 2
+        x: 1578
+        y: 677
+        width: 295
+        height: 223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ea40991701b9206b0800000000000000
+      internalID: -5331528513925610322
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: citysecondcityprops0007_14
+      rect:
+        serializedVersion: 2
+        x: 146
+        y: 14
+        width: 35
+        height: 625
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c2179e3c56f9b87b0800000000000000
+      internalID: -5220904083578588884
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: citysecondcityprops0007_15
+      rect:
+        serializedVersion: 2
+        x: 420
+        y: 150
+        width: 525
+        height: 326
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 47942b7b90d5a6470800000000000000
+      internalID: 8388619552248973684
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: citysecondcityprops0007_16
+      rect:
+        serializedVersion: 2
+        x: 1430
+        y: 143
+        width: 524
+        height: 325
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 49bce990433bd2db0800000000000000
+      internalID: -4814995390508119148
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      citysecondcityprops0007_0: -3055874151886377052
+      citysecondcityprops0007_1: 250746877089306834
+      citysecondcityprops0007_10: -1730431196241996659
+      citysecondcityprops0007_11: -4117578778651656061
+      citysecondcityprops0007_12: -6431825627441696348
+      citysecondcityprops0007_13: -5331528513925610322
+      citysecondcityprops0007_14: -5220904083578588884
+      citysecondcityprops0007_15: 8388619552248973684
+      citysecondcityprops0007_16: -4814995390508119148
+      citysecondcityprops0007_2: -203138503487930734
+      citysecondcityprops0007_3: 1933435051491479699
+      citysecondcityprops0007_4: 5511052311381189360
+      citysecondcityprops0007_5: -5433144502488786344
+      citysecondcityprops0007_6: -4682154516866495470
+      citysecondcityprops0007_7: -8521981718441231819
+      citysecondcityprops0007_8: -427396668223070250
+      citysecondcityprops0007_9: 1231047505849618696
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
