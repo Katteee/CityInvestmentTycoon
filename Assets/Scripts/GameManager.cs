@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
+    [Header("Money / Progress")]
     public float playerMoney = 10000f;
     public float aiMoney = 10000f;
 
@@ -28,16 +29,32 @@ public class GameManager : MonoBehaviour
     public int currentLevel = 1;
     public int maxMonths = 12;
 
+    [Header("Top Bar UI")]
     public TMP_Text moneyText;
     public TMP_Text aiMoneyText;
     public TMP_Text monthText;
     public TMP_Text levelText;
-    public TMP_Text selectedBusinessText;
-    public TMP_Text eventText;
-    public TMP_Text debtText;
-    public TMP_Text highScoreText;
+
+    [Header("Business Card UI")]
+    public TMP_Text businessNameText;
+    public TMP_Text businessTypeText;
+    public TMP_Text businessStatusText;
+    public TMP_Text businessLevelText;
+    public TMP_Text businessPriceText;
+    public TMP_Text businessProfitText;
+    public TMP_Text businessUpgradeCostText;
+
+    [Header("Progress Card UI")]
+    public TMP_Text progressTitleText;
+    public TMP_Text eventLabelText;
+    public TMP_Text eventValueText;
+    public TMP_Text debtLabelText;
+    public TMP_Text debtValueText;
+    public TMP_Text highScoreLabelText;
+    public TMP_Text highScoreValueText;
     public TMP_Text unlockText;
 
+    [Header("Buttons")]
     public Button buyButton;
     public Button sellButton;
     public Button upgradeButton;
@@ -68,10 +85,8 @@ public class GameManager : MonoBehaviour
         if (currentLevel <= 0)
             currentLevel = 1;
 
-        if (selectedBusinessText != null)
-            selectedBusinessText.text = "Selected business: none";
-
         ApplyStrategyByLevel();
+        UpdateSelectedBusinessUI();
         UpdateUI();
         UpdateButtons();
         UpdateNextMonthButtonText();
@@ -96,10 +111,7 @@ public class GameManager : MonoBehaviour
                 if (business != null)
                 {
                     selectedBusiness = business;
-
-                    if (selectedBusinessText != null)
-                        selectedBusinessText.text = business.GetInfo();
-
+                    UpdateSelectedBusinessUI();
                     UpdateButtons();
                 }
             }
@@ -115,8 +127,8 @@ public class GameManager : MonoBehaviour
 
         if (bought)
         {
-            currentEventName = "You bought " + selectedBusiness.businessName;
-            selectedBusinessText.text = selectedBusiness.GetInfo();
+            currentEventName = "Bought " + selectedBusiness.businessName;
+            UpdateSelectedBusinessUI();
             UpdateUI();
             UpdateButtons();
             SaveGame();
@@ -132,8 +144,8 @@ public class GameManager : MonoBehaviour
 
         if (sold)
         {
-            currentEventName = "You sold " + selectedBusiness.businessName;
-            selectedBusinessText.text = selectedBusiness.GetInfo();
+            currentEventName = "Sold " + selectedBusiness.businessName;
+            UpdateSelectedBusinessUI();
             UpdateUI();
             UpdateButtons();
             SaveGame();
@@ -149,8 +161,8 @@ public class GameManager : MonoBehaviour
 
         if (upgraded)
         {
-            currentEventName = "You upgraded " + selectedBusiness.businessName;
-            selectedBusinessText.text = selectedBusiness.GetInfo();
+            currentEventName = "Upgraded " + selectedBusiness.businessName;
+            UpdateSelectedBusinessUI();
             UpdateUI();
             UpdateButtons();
             SaveGame();
@@ -166,8 +178,8 @@ public class GameManager : MonoBehaviour
             return;
 
         selectedBusiness.IncreasePrice();
-        currentEventName = "Increased price in " + selectedBusiness.businessName;
-        selectedBusinessText.text = selectedBusiness.GetInfo();
+        currentEventName = "Price up: " + selectedBusiness.businessName;
+        UpdateSelectedBusinessUI();
         UpdateUI();
         SaveGame();
     }
@@ -181,8 +193,8 @@ public class GameManager : MonoBehaviour
             return;
 
         selectedBusiness.DecreasePrice();
-        currentEventName = "Decreased price in " + selectedBusiness.businessName;
-        selectedBusinessText.text = selectedBusiness.GetInfo();
+        currentEventName = "Price down: " + selectedBusiness.businessName;
+        UpdateSelectedBusinessUI();
         UpdateUI();
         SaveGame();
     }
@@ -195,7 +207,7 @@ public class GameManager : MonoBehaviour
         float loanAmount = 3000f;
         playerMoney += loanAmount;
         playerDebt += loanAmount;
-        currentEventName = "You took a loan: +" + loanAmount.ToString("F0");
+        currentEventName = "Loan +" + loanAmount.ToString("F0");
         UpdateUI();
         SaveGame();
     }
@@ -222,7 +234,6 @@ public class GameManager : MonoBehaviour
                 aiMoney += monthlyIncome;
         }
 
-        // відсотки по кредиту
         if (playerDebt > 0f)
         {
             float interest = playerDebt * monthlyLoanInterest;
@@ -237,9 +248,7 @@ public class GameManager : MonoBehaviour
 
         AITurn();
 
-        if (selectedBusiness != null && selectedBusinessText != null)
-            selectedBusinessText.text = selectedBusiness.GetInfo();
-
+        UpdateSelectedBusinessUI();
         CheckGameEnd();
         UpdateHighScore();
         UnlockLevels();
@@ -312,13 +321,13 @@ public class GameManager : MonoBehaviour
             case AIStrategy.Aggressive:
                 if (mostProfitableFree != null && mostProfitableFree.TryBuyAI())
                 {
-                    currentEventName = "AI (Aggressive) bought " + mostProfitableFree.businessName;
+                    currentEventName = "AI bought " + mostProfitableFree.businessName;
                     return;
                 }
 
                 if (bestUpgrade != null && bestUpgrade.TryUpgradeAI())
                 {
-                    currentEventName = "AI (Aggressive) upgraded " + bestUpgrade.businessName;
+                    currentEventName = "AI upgraded " + bestUpgrade.businessName;
                     return;
                 }
 
@@ -326,7 +335,7 @@ public class GameManager : MonoBehaviour
                 {
                     aiMoney += 2000f;
                     aiDebt += 2000f;
-                    currentEventName = "AI took a loan";
+                    currentEventName = "AI took loan";
                     return;
                 }
                 break;
@@ -336,7 +345,7 @@ public class GameManager : MonoBehaviour
                 {
                     if (bestUpgrade.TryUpgradeAI())
                     {
-                        currentEventName = "AI (Conservative) upgraded " + bestUpgrade.businessName;
+                        currentEventName = "AI upgraded " + bestUpgrade.businessName;
                         return;
                     }
                 }
@@ -345,7 +354,7 @@ public class GameManager : MonoBehaviour
                 {
                     if (cheapestFree.TryBuyAI())
                     {
-                        currentEventName = "AI (Conservative) bought " + cheapestFree.businessName;
+                        currentEventName = "AI bought " + cheapestFree.businessName;
                         return;
                     }
                 }
@@ -356,7 +365,7 @@ public class GameManager : MonoBehaviour
                 {
                     if (bestUpgrade.TryUpgradeAI())
                     {
-                        currentEventName = "AI (Balanced) upgraded " + bestUpgrade.businessName;
+                        currentEventName = "AI upgraded " + bestUpgrade.businessName;
                         return;
                     }
                 }
@@ -365,14 +374,14 @@ public class GameManager : MonoBehaviour
                 {
                     if (cheapestFree.TryBuyAI())
                     {
-                        currentEventName = "AI (Balanced) bought " + cheapestFree.businessName;
+                        currentEventName = "AI bought " + cheapestFree.businessName;
                         return;
                     }
                 }
                 break;
         }
 
-        currentEventName = "AI skipped turn";
+        currentEventName = "AI skipped";
     }
 
     private float CalculateTotalIncome(bool forPlayer)
@@ -412,7 +421,7 @@ public class GameManager : MonoBehaviour
         if (playerMoney < -3000f)
         {
             isGameOver = true;
-            currentEventName = "Game Over! You went bankrupt!";
+            currentEventName = "Game Over! Bankrupt";
             return;
         }
 
@@ -428,11 +437,11 @@ public class GameManager : MonoBehaviour
         float aiScore = aiMoney + aiIncome - aiDebt;
 
         if (playerScore > aiScore)
-            currentEventName = "Game Over! You win! Player: " + playerScore.ToString("F0") + " | AI: " + aiScore.ToString("F0");
+            currentEventName = "You win";
         else if (aiScore > playerScore)
-            currentEventName = "Game Over! AI wins! Player: " + playerScore.ToString("F0") + " | AI: " + aiScore.ToString("F0");
+            currentEventName = "AI wins";
         else
-            currentEventName = "Game Over! Draw! Player: " + playerScore.ToString("F0") + " | AI: " + aiScore.ToString("F0");
+            currentEventName = "Draw";
     }
 
     private void GenerateRandomEvent()
@@ -442,11 +451,11 @@ public class GameManager : MonoBehaviour
         switch (roll)
         {
             case 0:
-                currentEventName = "Normal Month";
+                currentEventName = "Normal month";
                 currentIncomeMultiplier = 1f;
                 break;
             case 1:
-                currentEventName = "Economic Boom";
+                currentEventName = "Economic boom";
                 currentIncomeMultiplier = 1.5f;
                 break;
             case 2:
@@ -454,18 +463,18 @@ public class GameManager : MonoBehaviour
                 currentIncomeMultiplier = 0.7f;
                 break;
             case 3:
-                currentEventName = "Tax Increase";
+                currentEventName = "Tax increase";
                 currentIncomeMultiplier = 0.85f;
                 break;
             default:
-                currentEventName = "Normal Month";
+                currentEventName = "Normal month";
                 currentIncomeMultiplier = 1f;
                 break;
         }
 
         if (Random.Range(0, 10) == 0)
         {
-            currentEventName = "City Festival";
+            currentEventName = "City festival";
             currentIncomeMultiplier = 2f;
         }
     }
@@ -476,6 +485,7 @@ public class GameManager : MonoBehaviour
         ApplyLevelSettings(currentLevel);
         ApplyStrategyByLevel();
         ResetBusinessesOnly();
+        UpdateSelectedBusinessUI();
         UpdateUI();
         UpdateButtons();
         UpdateNextMonthButtonText();
@@ -486,7 +496,7 @@ public class GameManager : MonoBehaviour
     {
         if (highestUnlockedLevel < 2)
         {
-            currentEventName = "Level 2 is locked";
+            currentEventName = "Level 2 locked";
             UpdateUI();
             return;
         }
@@ -495,6 +505,7 @@ public class GameManager : MonoBehaviour
         ApplyLevelSettings(currentLevel);
         ApplyStrategyByLevel();
         ResetBusinessesOnly();
+        UpdateSelectedBusinessUI();
         UpdateUI();
         UpdateButtons();
         UpdateNextMonthButtonText();
@@ -505,7 +516,7 @@ public class GameManager : MonoBehaviour
     {
         if (highestUnlockedLevel < 3)
         {
-            currentEventName = "Level 3 is locked";
+            currentEventName = "Level 3 locked";
             UpdateUI();
             return;
         }
@@ -514,6 +525,7 @@ public class GameManager : MonoBehaviour
         ApplyLevelSettings(currentLevel);
         ApplyStrategyByLevel();
         ResetBusinessesOnly();
+        UpdateSelectedBusinessUI();
         UpdateUI();
         UpdateButtons();
         UpdateNextMonthButtonText();
@@ -557,9 +569,7 @@ public class GameManager : MonoBehaviour
         foreach (Business business in businesses)
             business.ResetBusiness();
 
-        if (selectedBusinessText != null)
-            selectedBusinessText.text = "Selected business: none";
-
+        UpdateSelectedBusinessUI();
         UpdateButtons();
     }
 
@@ -575,6 +585,7 @@ public class GameManager : MonoBehaviour
         ApplyStrategyByLevel();
         ResetBusinessesOnly();
 
+        UpdateSelectedBusinessUI();
         UpdateUI();
         UpdateButtons();
         UpdateNextMonthButtonText();
@@ -583,28 +594,96 @@ public class GameManager : MonoBehaviour
     public void UpdateUI()
     {
         if (moneyText != null)
-            moneyText.text = "Money: " + playerMoney.ToString("F0");
+            moneyText.text = "Money\n" + playerMoney.ToString("F0");
 
         if (aiMoneyText != null)
-            aiMoneyText.text = "AI Money: " + aiMoney.ToString("F0");
+            aiMoneyText.text = "AI Money\n" + aiMoney.ToString("F0");
 
         if (monthText != null)
-            monthText.text = "Month: " + currentMonth;
+            monthText.text = "Month\n" + currentMonth;
 
         if (levelText != null)
-            levelText.text = "Level: " + currentLevel + " | AI: " + aiStrategy;
+            levelText.text = "Level\n" + currentLevel;
 
-        if (eventText != null)
-            eventText.text = "Event: " + currentEventName;
+        UpdateProgressUI();
+    }
 
-        if (debtText != null)
-            debtText.text = "Debt: " + playerDebt.ToString("F0");
+    private void UpdateSelectedBusinessUI()
+    {
+        if (selectedBusiness == null)
+        {
+            if (businessNameText != null) businessNameText.text = "No business";
+            if (businessTypeText != null) businessTypeText.text = "Type: -";
+            if (businessStatusText != null) businessStatusText.text = "Status: Not selected";
+            if (businessLevelText != null) businessLevelText.text = "Level: -";
+            if (businessPriceText != null) businessPriceText.text = "Price: -";
+            if (businessProfitText != null) businessProfitText.text = "Profit: -";
+            if (businessUpgradeCostText != null) businessUpgradeCostText.text = "Upgrade: -";
+            return;
+        }
 
-        if (highScoreText != null)
-            highScoreText.text = "High Score: " + highScore.ToString("F0");
+        string status = selectedBusiness.IsOwnedByPlayer() ? "Owned by Player" :
+                        selectedBusiness.IsOwnedByAI() ? "Owned by AI" :
+                        "Not owned";
+
+        if (businessNameText != null)
+            businessNameText.text = selectedBusiness.businessName;
+
+        if (businessTypeText != null)
+            businessTypeText.text = "Type: " + selectedBusiness.businessType;
+
+        if (businessStatusText != null)
+            businessStatusText.text = "Status: " + status;
+
+        if (businessLevelText != null)
+            businessLevelText.text = "Level: " + selectedBusiness.level;
+
+        if (businessPriceText != null)
+            businessPriceText.text = "Price: " + selectedBusiness.price.ToString("F0");
+
+        if (businessProfitText != null)
+            businessProfitText.text = "Profit: " + selectedBusiness.GetProfit().ToString("F0");
+
+        if (businessUpgradeCostText != null)
+            businessUpgradeCostText.text = "Upgrade: " + selectedBusiness.upgradeCost.ToString("F0");
+    }
+
+    private void UpdateProgressUI()
+    {
+        if (progressTitleText != null)
+            progressTitleText.text = "Progress";
+
+        if (eventLabelText != null)
+            eventLabelText.text = "Event";
+
+        if (eventValueText != null)
+            eventValueText.text = ShortEvent(currentEventName, 20);
+
+        if (debtLabelText != null)
+            debtLabelText.text = "Debt";
+
+        if (debtValueText != null)
+            debtValueText.text = playerDebt.ToString("F0");
+
+        if (highScoreLabelText != null)
+            highScoreLabelText.text = "High Score";
+
+        if (highScoreValueText != null)
+            highScoreValueText.text = highScore.ToString("F0");
 
         if (unlockText != null)
-            unlockText.text = "Unlocked Level: " + highestUnlockedLevel;
+            unlockText.text = "Unlocked: " + highestUnlockedLevel;
+    }
+
+    private string ShortEvent(string text, int maxLength = 20)
+    {
+        if (string.IsNullOrEmpty(text))
+            return "None";
+
+        if (text.Length <= maxLength)
+            return text;
+
+        return text.Substring(0, maxLength) + "...";
     }
 
     private void UpdateButtons()
