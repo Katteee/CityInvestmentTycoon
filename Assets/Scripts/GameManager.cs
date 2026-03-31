@@ -20,14 +20,16 @@ public class GameManager : MonoBehaviour
 
     public float playerDebt = 0f;
     public float aiDebt = 0f;
-    public float monthlyLoanInterest = 0.05f;
+    public float dailyLoanInterest = 0.002f;
 
     public float highScore = 0f;
     public int highestUnlockedLevel = 1;
 
+    public int currentDay = 1;
     public int currentMonth = 1;
     public int currentLevel = 1;
     public int maxMonths = 12;
+    public int daysInMonth = 30;
 
     [Header("Top Bar UI")]
     public TMP_Text moneyText;
@@ -65,7 +67,7 @@ public class GameManager : MonoBehaviour
     private Camera mainCamera;
     private Business selectedBusiness;
 
-    private float currentIncomeMultiplier = 1f;
+    private float cityDemandMultiplier = 1f;
     private string currentEventName = "None";
     private float levelIncomeMultiplier = 1f;
     private bool isGameOver = false;
@@ -81,15 +83,11 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         LoadGame();
-
-        if (currentLevel <= 0)
-            currentLevel = 1;
-
         ApplyStrategyByLevel();
         UpdateSelectedBusinessUI();
         UpdateUI();
         UpdateButtons();
-        UpdateNextMonthButtonText();
+        UpdateNextButtonText();
     }
 
     private void Update()
@@ -123,9 +121,7 @@ public class GameManager : MonoBehaviour
         if (isGameOver || selectedBusiness == null)
             return;
 
-        bool bought = selectedBusiness.TryBuyPlayer();
-
-        if (bought)
+        if (selectedBusiness.TryBuyPlayer())
         {
             currentEventName = "Bought " + selectedBusiness.businessName;
             UpdateSelectedBusinessUI();
@@ -140,9 +136,7 @@ public class GameManager : MonoBehaviour
         if (isGameOver || selectedBusiness == null)
             return;
 
-        bool sold = selectedBusiness.TrySellPlayer();
-
-        if (sold)
+        if (selectedBusiness.TrySellPlayer())
         {
             currentEventName = "Sold " + selectedBusiness.businessName;
             UpdateSelectedBusinessUI();
@@ -157,9 +151,7 @@ public class GameManager : MonoBehaviour
         if (isGameOver || selectedBusiness == null)
             return;
 
-        bool upgraded = selectedBusiness.TryUpgradePlayer();
-
-        if (upgraded)
+        if (selectedBusiness.TryUpgradePlayer())
         {
             currentEventName = "Upgraded " + selectedBusiness.businessName;
             UpdateSelectedBusinessUI();
@@ -178,7 +170,7 @@ public class GameManager : MonoBehaviour
             return;
 
         selectedBusiness.IncreasePrice();
-        currentEventName = "Price up: " + selectedBusiness.businessName;
+        currentEventName = "Price increased";
         UpdateSelectedBusinessUI();
         UpdateUI();
         SaveGame();
@@ -193,7 +185,7 @@ public class GameManager : MonoBehaviour
             return;
 
         selectedBusiness.DecreasePrice();
-        currentEventName = "Price down: " + selectedBusiness.businessName;
+        currentEventName = "Price decreased";
         UpdateSelectedBusinessUI();
         UpdateUI();
         SaveGame();
@@ -207,56 +199,86 @@ public class GameManager : MonoBehaviour
         float loanAmount = 3000f;
         playerMoney += loanAmount;
         playerDebt += loanAmount;
+
         currentEventName = "Loan +" + loanAmount.ToString("F0");
         UpdateUI();
         SaveGame();
     }
 
-    public void NextMonth()
+    public void NextDay()
     {
         if (isGameOver)
             return;
 
-        currentMonth++;
-        GenerateRandomEvent();
+        GenerateDailyEvent();
 
         Business[] allBusinesses = FindObjectsByType<Business>(FindObjectsSortMode.None);
 
         foreach (Business business in allBusinesses)
         {
-            business.RecalculateStats();
-
-            float monthlyIncome = business.incomePerMonth * currentIncomeMultiplier * levelIncomeMultiplier;
+            DailyBusinessReport report = business.SimulateDay(cityDemandMultiplier * levelIncomeMultiplier);
 
             if (business.IsOwnedByPlayer())
-                playerMoney += monthlyIncome;
+                playerMoney += report.netProfit;
             else if (business.IsOwnedByAI())
-                aiMoney += monthlyIncome;
+                aiMoney += report.netProfit;
         }
 
         if (playerDebt > 0f)
-        {
-            float interest = playerDebt * monthlyLoanInterest;
-            playerMoney -= interest;
-        }
+            playerMoney -= playerDebt * dailyLoanInterest;
 
         if (aiDebt > 0f)
-        {
-            float interest = aiDebt * monthlyLoanInterest;
-            aiMoney -= interest;
-        }
+            aiMoney -= aiDebt * dailyLoanInterest;
 
         AITurn();
 
-        UpdateSelectedBusinessUI();
+        currentDay++;
+
+        if (currentDay > daysInMonth)
+        {
+            currentDay = 1;
+            currentMonth++;
+            currentEventName = "New month started";
+        }
+
         CheckGameEnd();
         UpdateHighScore();
         UnlockLevels();
 
+        UpdateSelectedBusinessUI();
         UpdateUI();
         UpdateButtons();
-        UpdateNextMonthButtonText();
+        UpdateNextButtonText();
         SaveGame();
+    }
+
+    private void GenerateDailyEvent()
+    {
+        int roll = Random.Range(0, 5);
+
+        switch (roll)
+        {
+            case 0:
+                currentEventName = "Normal day";
+                cityDemandMultiplier = 1f;
+                break;
+            case 1:
+                currentEventName = "Rainy day";
+                cityDemandMultiplier = 0.85f;
+                break;
+            case 2:
+                currentEventName = "Festival";
+                cityDemandMultiplier = 1.5f;
+                break;
+            case 3:
+                currentEventName = "Delivery rush";
+                cityDemandMultiplier = 1.25f;
+                break;
+            case 4:
+                currentEventName = "Low traffic";
+                cityDemandMultiplier = 0.7f;
+                break;
+        }
     }
 
     private void ApplyStrategyByLevel()
@@ -265,146 +287,123 @@ public class GameManager : MonoBehaviour
         {
             case 1:
                 aiStrategy = AIStrategy.Conservative;
+                levelIncomeMultiplier = 1f;
                 break;
             case 2:
                 aiStrategy = AIStrategy.Balanced;
+                levelIncomeMultiplier = 0.9f;
                 break;
             case 3:
                 aiStrategy = AIStrategy.Aggressive;
+                levelIncomeMultiplier = 0.8f;
                 break;
         }
     }
 
     private void AITurn()
     {
-        if (isGameOver)
-            return;
-
         Business[] allBusinesses = FindObjectsByType<Business>(FindObjectsSortMode.None);
 
-        Business bestUpgrade = null;
         Business cheapestFree = null;
-        Business mostProfitableFree = null;
-        Business weakOwned = null;
+        Business bestOwned = null;
 
         foreach (Business business in allBusinesses)
         {
-            if (business.IsOwnedByAI())
-            {
-                if (aiMoney >= business.upgradeCost)
-                {
-                    if (bestUpgrade == null || business.incomePerMonth > bestUpgrade.incomePerMonth)
-                        bestUpgrade = business;
-                }
-
-                if (business.incomePerMonth < 80f)
-                {
-                    if (weakOwned == null || business.incomePerMonth < weakOwned.incomePerMonth)
-                        weakOwned = business;
-                }
-            }
-            else if (!business.IsOwned())
+            if (!business.IsOwned())
             {
                 if (aiMoney >= business.price)
                 {
                     if (cheapestFree == null || business.price < cheapestFree.price)
                         cheapestFree = business;
-
-                    if (mostProfitableFree == null || business.incomePerMonth > mostProfitableFree.incomePerMonth)
-                        mostProfitableFree = business;
+                }
+            }
+            else if (business.IsOwnedByAI())
+            {
+                if (aiMoney >= business.upgradeCost)
+                {
+                    if (bestOwned == null || business.lastDayProfit > bestOwned.lastDayProfit)
+                        bestOwned = business;
                 }
             }
         }
 
+        Debug.Log("AI turn started. AI money = " + aiMoney);
+
         switch (aiStrategy)
         {
             case AIStrategy.Aggressive:
-                if (mostProfitableFree != null && mostProfitableFree.TryBuyAI())
+                if (cheapestFree != null && cheapestFree.TryBuyAI())
                 {
-                    currentEventName = "AI bought " + mostProfitableFree.businessName;
+                    currentEventName = "AI bought " + cheapestFree.businessName;
+                    Debug.Log(currentEventName);
                     return;
                 }
 
-                if (bestUpgrade != null && bestUpgrade.TryUpgradeAI())
+                if (bestOwned != null && bestOwned.TryUpgradeAI())
                 {
-                    currentEventName = "AI upgraded " + bestUpgrade.businessName;
+                    currentEventName = "AI upgraded " + bestOwned.businessName;
+                    Debug.Log(currentEventName);
+                    return;
+                }
+                break;
+
+            case AIStrategy.Balanced:
+                if (bestOwned != null && Random.value > 0.5f && bestOwned.TryUpgradeAI())
+                {
+                    currentEventName = "AI upgraded " + bestOwned.businessName;
+                    Debug.Log(currentEventName);
                     return;
                 }
 
-                if (aiMoney < 1500f)
+                if (cheapestFree != null && cheapestFree.TryBuyAI())
                 {
-                    aiMoney += 2000f;
-                    aiDebt += 2000f;
-                    currentEventName = "AI took loan";
+                    currentEventName = "AI bought " + cheapestFree.businessName;
+                    Debug.Log(currentEventName);
                     return;
                 }
                 break;
 
             case AIStrategy.Conservative:
-                if (bestUpgrade != null && aiMoney > 2000f && Random.value > 0.3f)
+                if (bestOwned != null && aiMoney > 2000f && bestOwned.TryUpgradeAI())
                 {
-                    if (bestUpgrade.TryUpgradeAI())
-                    {
-                        currentEventName = "AI upgraded " + bestUpgrade.businessName;
-                        return;
-                    }
+                    currentEventName = "AI upgraded " + bestOwned.businessName;
+                    Debug.Log(currentEventName);
+                    return;
                 }
 
-                if (cheapestFree != null && aiMoney > 2500f)
+                if (cheapestFree != null && aiMoney > 2500f && cheapestFree.TryBuyAI())
                 {
-                    if (cheapestFree.TryBuyAI())
-                    {
-                        currentEventName = "AI bought " + cheapestFree.businessName;
-                        return;
-                    }
-                }
-                break;
-
-            case AIStrategy.Balanced:
-                if (bestUpgrade != null && Random.value > 0.4f)
-                {
-                    if (bestUpgrade.TryUpgradeAI())
-                    {
-                        currentEventName = "AI upgraded " + bestUpgrade.businessName;
-                        return;
-                    }
-                }
-
-                if (cheapestFree != null)
-                {
-                    if (cheapestFree.TryBuyAI())
-                    {
-                        currentEventName = "AI bought " + cheapestFree.businessName;
-                        return;
-                    }
+                    currentEventName = "AI bought " + cheapestFree.businessName;
+                    Debug.Log(currentEventName);
+                    return;
                 }
                 break;
         }
 
-        currentEventName = "AI skipped";
+        Debug.Log("AI skipped turn");
     }
 
-    private float CalculateTotalIncome(bool forPlayer)
+    private float CalculateTotalBusinessValue(bool forPlayer)
     {
-        float totalIncome = 0f;
+        float total = 0f;
         Business[] allBusinesses = FindObjectsByType<Business>(FindObjectsSortMode.None);
 
         foreach (Business business in allBusinesses)
         {
             if (forPlayer && business.IsOwnedByPlayer())
-                totalIncome += business.incomePerMonth;
+                total += business.totalProfit + business.price;
             else if (!forPlayer && business.IsOwnedByAI())
-                totalIncome += business.incomePerMonth;
+                total += business.totalProfit + business.price;
         }
 
-        return totalIncome;
+        return total;
     }
 
     private void UpdateHighScore()
     {
-        float currentScore = playerMoney + CalculateTotalIncome(true) - playerDebt;
-        if (currentScore > highScore)
-            highScore = currentScore;
+        float score = playerMoney + CalculateTotalBusinessValue(true) - playerDebt;
+        if (score > highScore)
+            highScore = score;
     }
 
     private void UnlockLevels()
@@ -430,11 +429,8 @@ public class GameManager : MonoBehaviour
 
         isGameOver = true;
 
-        float playerIncome = CalculateTotalIncome(true);
-        float aiIncome = CalculateTotalIncome(false);
-
-        float playerScore = playerMoney + playerIncome - playerDebt;
-        float aiScore = aiMoney + aiIncome - aiDebt;
+        float playerScore = playerMoney + CalculateTotalBusinessValue(true) - playerDebt;
+        float aiScore = aiMoney + CalculateTotalBusinessValue(false) - aiDebt;
 
         if (playerScore > aiScore)
             currentEventName = "You win";
@@ -444,151 +440,9 @@ public class GameManager : MonoBehaviour
             currentEventName = "Draw";
     }
 
-    private void GenerateRandomEvent()
+    public Business GetSelectedBusiness()
     {
-        int roll = Random.Range(0, 4);
-
-        switch (roll)
-        {
-            case 0:
-                currentEventName = "Normal month";
-                currentIncomeMultiplier = 1f;
-                break;
-            case 1:
-                currentEventName = "Economic boom";
-                currentIncomeMultiplier = 1.5f;
-                break;
-            case 2:
-                currentEventName = "Recession";
-                currentIncomeMultiplier = 0.7f;
-                break;
-            case 3:
-                currentEventName = "Tax increase";
-                currentIncomeMultiplier = 0.85f;
-                break;
-            default:
-                currentEventName = "Normal month";
-                currentIncomeMultiplier = 1f;
-                break;
-        }
-
-        if (Random.Range(0, 10) == 0)
-        {
-            currentEventName = "City festival";
-            currentIncomeMultiplier = 2f;
-        }
-    }
-
-    public void SetLevel1()
-    {
-        currentLevel = 1;
-        ApplyLevelSettings(currentLevel);
-        ApplyStrategyByLevel();
-        ResetBusinessesOnly();
-        UpdateSelectedBusinessUI();
-        UpdateUI();
-        UpdateButtons();
-        UpdateNextMonthButtonText();
-        SaveGame();
-    }
-
-    public void SetLevel2()
-    {
-        if (highestUnlockedLevel < 2)
-        {
-            currentEventName = "Level 2 locked";
-            UpdateUI();
-            return;
-        }
-
-        currentLevel = 2;
-        ApplyLevelSettings(currentLevel);
-        ApplyStrategyByLevel();
-        ResetBusinessesOnly();
-        UpdateSelectedBusinessUI();
-        UpdateUI();
-        UpdateButtons();
-        UpdateNextMonthButtonText();
-        SaveGame();
-    }
-
-    public void SetLevel3()
-    {
-        if (highestUnlockedLevel < 3)
-        {
-            currentEventName = "Level 3 locked";
-            UpdateUI();
-            return;
-        }
-
-        currentLevel = 3;
-        ApplyLevelSettings(currentLevel);
-        ApplyStrategyByLevel();
-        ResetBusinessesOnly();
-        UpdateSelectedBusinessUI();
-        UpdateUI();
-        UpdateButtons();
-        UpdateNextMonthButtonText();
-        SaveGame();
-    }
-
-    private void ApplyLevelSettings(int level)
-    {
-        switch (level)
-        {
-            case 1:
-                playerMoney = 10000f;
-                aiMoney = 10000f;
-                levelIncomeMultiplier = 1.0f;
-                break;
-            case 2:
-                playerMoney = 7000f;
-                aiMoney = 7000f;
-                levelIncomeMultiplier = 0.9f;
-                break;
-            case 3:
-                playerMoney = 5000f;
-                aiMoney = 5000f;
-                levelIncomeMultiplier = 0.75f;
-                break;
-        }
-
-        playerDebt = 0f;
-        aiDebt = 0f;
-        currentMonth = 1;
-        currentEventName = "None";
-        currentIncomeMultiplier = 1f;
-        isGameOver = false;
-    }
-
-    private void ResetBusinessesOnly()
-    {
-        selectedBusiness = null;
-
-        Business[] businesses = FindObjectsByType<Business>(FindObjectsSortMode.None);
-        foreach (Business business in businesses)
-            business.ResetBusiness();
-
-        UpdateSelectedBusinessUI();
-        UpdateButtons();
-    }
-
-    public void ResetGame()
-    {
-        SaveSystem.DeleteSave();
-
-        currentLevel = 1;
-        highestUnlockedLevel = 1;
-        highScore = 0f;
-
-        ApplyLevelSettings(currentLevel);
-        ApplyStrategyByLevel();
-        ResetBusinessesOnly();
-
-        UpdateSelectedBusinessUI();
-        UpdateUI();
-        UpdateButtons();
-        UpdateNextMonthButtonText();
+        return selectedBusiness;
     }
 
     public void UpdateUI()
@@ -600,7 +454,7 @@ public class GameManager : MonoBehaviour
             aiMoneyText.text = "AI Money\n" + aiMoney.ToString("F0");
 
         if (monthText != null)
-            monthText.text = "Month\n" + currentMonth;
+            monthText.text = "Day " + currentDay + "\nMonth " + currentMonth;
 
         if (levelText != null)
             levelText.text = "Level\n" + currentLevel;
@@ -616,8 +470,8 @@ public class GameManager : MonoBehaviour
             if (businessTypeText != null) businessTypeText.text = "Type: -";
             if (businessStatusText != null) businessStatusText.text = "Status: Not selected";
             if (businessLevelText != null) businessLevelText.text = "Level: -";
-            if (businessPriceText != null) businessPriceText.text = "Price: -";
-            if (businessProfitText != null) businessProfitText.text = "Profit: -";
+            if (businessPriceText != null) businessPriceText.text = "Stock/Emp: -";
+            if (businessProfitText != null) businessProfitText.text = "Day Profit: -";
             if (businessUpgradeCostText != null) businessUpgradeCostText.text = "Upgrade: -";
             return;
         }
@@ -636,13 +490,23 @@ public class GameManager : MonoBehaviour
             businessStatusText.text = "Status: " + status;
 
         if (businessLevelText != null)
-            businessLevelText.text = "Level: " + selectedBusiness.level;
+            businessLevelText.text = "Lvl " + selectedBusiness.level + " | Emp: " + selectedBusiness.employees;
 
         if (businessPriceText != null)
-            businessPriceText.text = "Price: " + selectedBusiness.price.ToString("F0");
+        {
+            businessPriceText.text =
+                "Stock: " + selectedBusiness.stock + "/" + selectedBusiness.stockCapacity +
+                "\nCustomers: " + selectedBusiness.lastDayCustomers +
+                "\nSold: " + selectedBusiness.lastDayUnitsSold;
+        }
 
         if (businessProfitText != null)
-            businessProfitText.text = "Profit: " + selectedBusiness.GetProfit().ToString("F0");
+        {
+            businessProfitText.text =
+                "Revenue: " + selectedBusiness.lastDayRevenue.ToString("F0") +
+                "\nSalaries: " + selectedBusiness.lastDaySalaries.ToString("F0") +
+                "\nProfit: " + selectedBusiness.lastDayProfit.ToString("F0");
+        }
 
         if (businessUpgradeCostText != null)
             businessUpgradeCostText.text = "Upgrade: " + selectedBusiness.upgradeCost.ToString("F0");
@@ -657,7 +521,7 @@ public class GameManager : MonoBehaviour
             eventLabelText.text = "Event";
 
         if (eventValueText != null)
-            eventValueText.text = ShortEvent(currentEventName, 20);
+            eventValueText.text = currentEventName;
 
         if (debtLabelText != null)
             debtLabelText.text = "Debt";
@@ -673,17 +537,6 @@ public class GameManager : MonoBehaviour
 
         if (unlockText != null)
             unlockText.text = "Unlocked: " + highestUnlockedLevel;
-    }
-
-    private string ShortEvent(string text, int maxLength = 20)
-    {
-        if (string.IsNullOrEmpty(text))
-            return "None";
-
-        if (text.Length <= maxLength)
-            return text;
-
-        return text.Substring(0, maxLength) + "...";
     }
 
     private void UpdateButtons()
@@ -718,17 +571,15 @@ public class GameManager : MonoBehaviour
             nextMonthButton.interactable = true;
     }
 
-    private void UpdateNextMonthButtonText()
+    private void UpdateNextButtonText()
     {
         if (nextMonthButton == null)
             return;
 
         TMP_Text buttonText = nextMonthButton.GetComponentInChildren<TMP_Text>();
 
-        if (buttonText == null)
-            return;
-
-        buttonText.text = isGameOver ? "Game Over" : "Next Month";
+        if (buttonText != null)
+            buttonText.text = isGameOver ? "Game Over" : "Next Day";
     }
 
     public void SaveGame()
@@ -746,7 +597,8 @@ public class GameManager : MonoBehaviour
             currentLevel = 1;
             highestUnlockedLevel = 1;
             highScore = 0f;
-            ApplyLevelSettings(currentLevel);
+            currentDay = 1;
+            currentMonth = 1;
             return;
         }
 
@@ -754,6 +606,7 @@ public class GameManager : MonoBehaviour
         aiMoney = data.aiMoney;
         playerDebt = data.playerDebt;
         aiDebt = data.aiDebt;
+        currentDay = data.currentDay;
         currentMonth = data.currentMonth;
         currentLevel = data.currentLevel;
         highScore = data.highScore;
@@ -767,13 +620,16 @@ public class GameManager : MonoBehaviour
             {
                 if (business.businessName == savedBusiness.businessName)
                 {
-                    business.SetSaveData(
-                        savedBusiness.owner,
-                        savedBusiness.level,
-                        savedBusiness.incomePerMonth,
-                        savedBusiness.upgradeCost,
-                        savedBusiness.servicePrice
-                    );
+                    business.SetOwnerFromSave(savedBusiness.owner);
+                    business.level = savedBusiness.level;
+                    business.qualityLevel = savedBusiness.qualityLevel;
+                    business.popularity = savedBusiness.popularity;
+                    business.employees = savedBusiness.employees;
+                    business.stock = savedBusiness.stock;
+                    business.deliveryVehicles = savedBusiness.deliveryVehicles;
+                    business.upgradeCost = savedBusiness.upgradeCost;
+                    business.lastDayProfit = savedBusiness.lastDayProfit;
+                    business.totalProfit = savedBusiness.totalProfit;
                 }
             }
         }
@@ -781,8 +637,108 @@ public class GameManager : MonoBehaviour
         isGameOver = currentMonth >= maxMonths;
     }
 
-    public Business GetSelectedBusiness()
+    public void ResetGame()
     {
-        return selectedBusiness;
+        SaveSystem.DeleteSave();
+
+        playerMoney = 10000f;
+        aiMoney = 10000f;
+        playerDebt = 0f;
+        aiDebt = 0f;
+
+        currentDay = 1;
+        currentMonth = 1;
+        currentLevel = 1;
+
+        highScore = 0f;
+        highestUnlockedLevel = 1;
+
+        isGameOver = false;
+        currentEventName = "Game Reset";
+        cityDemandMultiplier = 1f;
+
+        selectedBusiness = null;
+
+        Business[] businesses = FindObjectsByType<Business>(FindObjectsSortMode.None);
+        foreach (Business business in businesses)
+            business.ResetBusiness();
+
+        ApplyStrategyByLevel();
+        UpdateSelectedBusinessUI();
+        UpdateUI();
+        UpdateButtons();
+        UpdateNextButtonText();
+    }
+
+    public void SetLevel1()
+    {
+        currentLevel = 1;
+        StartLevel();
+    }
+
+    public void SetLevel2()
+    {
+        if (highestUnlockedLevel < 2)
+        {
+            currentEventName = "Level 2 locked";
+            UpdateUI();
+            return;
+        }
+
+        currentLevel = 2;
+        StartLevel();
+    }
+
+    public void SetLevel3()
+    {
+        if (highestUnlockedLevel < 3)
+        {
+            currentEventName = "Level 3 locked";
+            UpdateUI();
+            return;
+        }
+
+        currentLevel = 3;
+        StartLevel();
+    }
+
+    private void StartLevel()
+    {
+        switch (currentLevel)
+        {
+            case 1:
+                playerMoney = 10000f;
+                aiMoney = 10000f;
+                break;
+            case 2:
+                playerMoney = 7000f;
+                aiMoney = 7000f;
+                break;
+            case 3:
+                playerMoney = 5000f;
+                aiMoney = 5000f;
+                break;
+        }
+
+        playerDebt = 0f;
+        aiDebt = 0f;
+        currentDay = 1;
+        currentMonth = 1;
+        isGameOver = false;
+        currentEventName = "Level " + currentLevel;
+        cityDemandMultiplier = 1f;
+
+        selectedBusiness = null;
+
+        Business[] businesses = FindObjectsByType<Business>(FindObjectsSortMode.None);
+        foreach (Business business in businesses)
+            business.ResetBusiness();
+
+        ApplyStrategyByLevel();
+        UpdateSelectedBusinessUI();
+        UpdateUI();
+        UpdateButtons();
+        UpdateNextButtonText();
+        SaveGame();
     }
 }

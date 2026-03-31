@@ -6,10 +6,18 @@ public class BusinessSaveData
 {
     public string businessName;
     public string owner;
+
     public int level;
-    public float incomePerMonth;
+    public int qualityLevel;
+    public float popularity;
+
+    public int employees;
+    public int stock;
+    public int deliveryVehicles;
+
     public float upgradeCost;
-    public float servicePrice;
+    public float lastDayProfit;
+    public float totalProfit;
 }
 
 [System.Serializable]
@@ -25,7 +33,9 @@ public class GameSaveData
     public float playerDebt;
     public float aiDebt;
 
+    public int currentDay;
     public int currentMonth;
+
     public BusinessSaveData[] businesses;
 }
 
@@ -36,11 +46,15 @@ public static class SaveSystem
     public static void SaveGame(GameManager gameManager, Business[] businesses)
     {
         GameSaveData data = new GameSaveData();
+
         data.playerMoney = gameManager.playerMoney;
         data.aiMoney = gameManager.aiMoney;
         data.playerDebt = gameManager.playerDebt;
         data.aiDebt = gameManager.aiDebt;
+
+        data.currentDay = gameManager.currentDay;
         data.currentMonth = gameManager.currentMonth;
+
         data.currentLevel = gameManager.currentLevel;
         data.highScore = gameManager.highScore;
         data.highestUnlockedLevel = gameManager.highestUnlockedLevel;
@@ -49,14 +63,21 @@ public static class SaveSystem
 
         for (int i = 0; i < businesses.Length; i++)
         {
+            Business b = businesses[i];
+
             data.businesses[i] = new BusinessSaveData
             {
-                businessName = businesses[i].businessName,
-                owner = businesses[i].GetOwnerString(),
-                level = businesses[i].level,
-                incomePerMonth = businesses[i].incomePerMonth,
-                upgradeCost = businesses[i].upgradeCost,
-                servicePrice = businesses[i].servicePrice
+                businessName = b.businessName,
+                owner = b.GetOwnerString(),
+                level = b.level,
+                qualityLevel = b.qualityLevel,
+                popularity = b.popularity,
+                employees = b.employees,
+                stock = b.stock,
+                deliveryVehicles = b.deliveryVehicles,
+                upgradeCost = b.upgradeCost,
+                lastDayProfit = b.lastDayProfit,
+                totalProfit = b.totalProfit
             };
         }
 

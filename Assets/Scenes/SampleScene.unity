@@ -1743,20 +1743,33 @@ MonoBehaviour:
   businessName: Cafe
   businessType: 0
   price: 1000
-  baseIncomePerMonth: 200
-  monthlyCost: 50
-  popularity: 1.2
-  qualityLevel: 1
-  bankruptcyRisk: 0.05
-  competitionImpact: 0.1
-  level: 1
-  incomePerMonth: 200
-  upgradeCost: 500
-  servicePrice: 1
-  minServicePrice: 0.5
-  maxServicePrice: 2
-  priceStep: 0.1
   owner: 0
+  level: 1
+  qualityLevel: 1
+  popularity: 1.2
+  competitionImpact: 0.1
+  bankruptcyRisk: 0.05
+  employees: 2
+  salaryPerEmployeePerDay: 40
+  salePrice: 15
+  productCost: 6
+  stock: 40
+  stockCapacity: 100
+  autoBuyAmount: 20
+  baseCustomersPerDay: 20
+  dailyRent: 25
+  electricityPerDay: 10
+  deliveryVehicles: 0
+  vehiclePrice: 800
+  vehicleMaintenancePerDay: 8
+  upgradeCost: 500
+  lastDayProfit: 0
+  totalProfit: 0
+  totalCustomersServed: 0
+  lastDayCustomers: 0
+  lastDayUnitsSold: 0
+  lastDayRevenue: 0
+  lastDaySalaries: 0
   selectedScaleMultiplier: 1.15
   scaleSmoothSpeed: 5
 --- !u!1 &288440257
@@ -4884,20 +4897,33 @@ MonoBehaviour:
   businessName: Rental Property
   businessType: 5
   price: 1000
-  baseIncomePerMonth: 200
-  monthlyCost: 50
-  popularity: 1
-  qualityLevel: 1
-  bankruptcyRisk: 0.05
-  competitionImpact: 0.1
-  level: 1
-  incomePerMonth: 200
-  upgradeCost: 500
-  servicePrice: 1
-  minServicePrice: 0.5
-  maxServicePrice: 2
-  priceStep: 0.1
   owner: 0
+  level: 1
+  qualityLevel: 1
+  popularity: 1
+  competitionImpact: 0.1
+  bankruptcyRisk: 0.05
+  employees: 2
+  salaryPerEmployeePerDay: 40
+  salePrice: 15
+  productCost: 6
+  stock: 40
+  stockCapacity: 100
+  autoBuyAmount: 20
+  baseCustomersPerDay: 20
+  dailyRent: 25
+  electricityPerDay: 10
+  deliveryVehicles: 0
+  vehiclePrice: 800
+  vehicleMaintenancePerDay: 8
+  upgradeCost: 500
+  lastDayProfit: 0
+  totalProfit: 0
+  totalCustomersServed: 0
+  lastDayCustomers: 0
+  lastDayUnitsSold: 0
+  lastDayRevenue: 0
+  lastDaySalaries: 0
   selectedScaleMultiplier: 1.15
   scaleSmoothSpeed: 5
 --- !u!1 &1276713356
@@ -5082,7 +5108,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 140, y: 200}
-  m_SizeDelta: {x: 350, y: 400}
+  m_SizeDelta: {x: 350, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1329020390
 MonoBehaviour:
@@ -6193,20 +6219,33 @@ MonoBehaviour:
   businessName: Mall
   businessType: 4
   price: 1000
-  baseIncomePerMonth: 200
-  monthlyCost: 50
-  popularity: 1
-  qualityLevel: 1
-  bankruptcyRisk: 0.05
-  competitionImpact: 0.1
-  level: 1
-  incomePerMonth: 200
-  upgradeCost: 500
-  servicePrice: 1
-  minServicePrice: 0.5
-  maxServicePrice: 2
-  priceStep: 0.1
   owner: 0
+  level: 1
+  qualityLevel: 1
+  popularity: 1
+  competitionImpact: 0.1
+  bankruptcyRisk: 0.05
+  employees: 2
+  salaryPerEmployeePerDay: 40
+  salePrice: 15
+  productCost: 6
+  stock: 40
+  stockCapacity: 100
+  autoBuyAmount: 20
+  baseCustomersPerDay: 20
+  dailyRent: 25
+  electricityPerDay: 10
+  deliveryVehicles: 0
+  vehiclePrice: 800
+  vehicleMaintenancePerDay: 8
+  upgradeCost: 500
+  lastDayProfit: 0
+  totalProfit: 0
+  totalCustomersServed: 0
+  lastDayCustomers: 0
+  lastDayUnitsSold: 0
+  lastDayRevenue: 0
+  lastDaySalaries: 0
   selectedScaleMultiplier: 1.15
   scaleSmoothSpeed: 5
 --- !u!1 &1727557718
@@ -6363,20 +6402,33 @@ MonoBehaviour:
   businessName: Shop
   businessType: 1
   price: 2000
-  baseIncomePerMonth: 400
-  monthlyCost: 50
-  popularity: 1
-  qualityLevel: 1
-  bankruptcyRisk: 0.05
-  competitionImpact: 0.1
-  level: 1
-  incomePerMonth: 400
-  upgradeCost: 500
-  servicePrice: 1
-  minServicePrice: 0.5
-  maxServicePrice: 2
-  priceStep: 0.1
   owner: 0
+  level: 1
+  qualityLevel: 1
+  popularity: 1
+  competitionImpact: 0.1
+  bankruptcyRisk: 0.05
+  employees: 2
+  salaryPerEmployeePerDay: 40
+  salePrice: 15
+  productCost: 6
+  stock: 40
+  stockCapacity: 100
+  autoBuyAmount: 20
+  baseCustomersPerDay: 20
+  dailyRent: 25
+  electricityPerDay: 10
+  deliveryVehicles: 0
+  vehiclePrice: 800
+  vehicleMaintenancePerDay: 8
+  upgradeCost: 500
+  lastDayProfit: 0
+  totalProfit: 0
+  totalCustomersServed: 0
+  lastDayCustomers: 0
+  lastDayUnitsSold: 0
+  lastDayRevenue: 0
+  lastDaySalaries: 0
   selectedScaleMultiplier: 1.15
   scaleSmoothSpeed: 5
 --- !u!1 &1772269925
@@ -6720,7 +6772,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 10
+  m_SortingOrder: 12
   m_MaskInteraction: 0
   m_Sprite: {fileID: 8017309526081816478, guid: b637a879479da4a4792039dca9405fe3, type: 3}
   m_Color: {r: 0.8679245, g: 0.8679245, b: 0.8679245, a: 1}
@@ -6808,20 +6860,33 @@ MonoBehaviour:
   businessName: Office
   businessType: 2
   price: 5000
-  baseIncomePerMonth: 800
-  monthlyCost: 50
-  popularity: 1
-  qualityLevel: 1
-  bankruptcyRisk: 0.05
-  competitionImpact: 0.1
-  level: 1
-  incomePerMonth: 800
-  upgradeCost: 500
-  servicePrice: 1
-  minServicePrice: 0.5
-  maxServicePrice: 2
-  priceStep: 0.1
   owner: 0
+  level: 1
+  qualityLevel: 1
+  popularity: 1
+  competitionImpact: 0.1
+  bankruptcyRisk: 0.05
+  employees: 2
+  salaryPerEmployeePerDay: 40
+  salePrice: 15
+  productCost: 6
+  stock: 40
+  stockCapacity: 100
+  autoBuyAmount: 20
+  baseCustomersPerDay: 20
+  dailyRent: 25
+  electricityPerDay: 10
+  deliveryVehicles: 0
+  vehiclePrice: 800
+  vehicleMaintenancePerDay: 8
+  upgradeCost: 500
+  lastDayProfit: 0
+  totalProfit: 0
+  totalCustomersServed: 0
+  lastDayCustomers: 0
+  lastDayUnitsSold: 0
+  lastDayRevenue: 0
+  lastDaySalaries: 0
   selectedScaleMultiplier: 1.15
   scaleSmoothSpeed: 5
 --- !u!1 &1811804568
@@ -8560,12 +8625,14 @@ MonoBehaviour:
   aiMoney: 10000
   playerDebt: 0
   aiDebt: 0
-  monthlyLoanInterest: 0.05
+  dailyLoanInterest: 0.002
   highScore: 0
   highestUnlockedLevel: 1
+  currentDay: 1
   currentMonth: 1
   currentLevel: 1
   maxMonths: 12
+  daysInMonth: 30
   moneyText: {fileID: 1862699855}
   aiMoneyText: {fileID: 1881188512}
   monthText: {fileID: 1471121618}
@@ -8990,7 +9057,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 10
+  m_SortingOrder: 12
   m_MaskInteraction: 0
   m_Sprite: {fileID: -347553243707120431, guid: c65d79c1e970b4baca3ed11c39d38304, type: 3}
   m_Color: {r: 1, g: 0.9764151, b: 0.9764151, a: 1}
@@ -9017,20 +9084,33 @@ MonoBehaviour:
   businessName: Factory
   businessType: 3
   price: 1000
-  baseIncomePerMonth: 200
-  monthlyCost: 50
-  popularity: 1
-  qualityLevel: 1
-  bankruptcyRisk: 0.05
-  competitionImpact: 0.1
-  level: 1
-  incomePerMonth: 200
-  upgradeCost: 500
-  servicePrice: 1
-  minServicePrice: 0.5
-  maxServicePrice: 2
-  priceStep: 0.1
   owner: 0
+  level: 1
+  qualityLevel: 1
+  popularity: 1
+  competitionImpact: 0.1
+  bankruptcyRisk: 0.05
+  employees: 2
+  salaryPerEmployeePerDay: 40
+  salePrice: 15
+  productCost: 6
+  stock: 40
+  stockCapacity: 100
+  autoBuyAmount: 20
+  baseCustomersPerDay: 20
+  dailyRent: 25
+  electricityPerDay: 10
+  deliveryVehicles: 0
+  vehiclePrice: 800
+  vehicleMaintenancePerDay: 8
+  upgradeCost: 500
+  lastDayProfit: 0
+  totalProfit: 0
+  totalCustomersServed: 0
+  lastDayCustomers: 0
+  lastDayUnitsSold: 0
+  lastDayRevenue: 0
+  lastDaySalaries: 0
   selectedScaleMultiplier: 1.15
   scaleSmoothSpeed: 5
 --- !u!1 &2109031784
@@ -9322,7 +9402,7 @@ GameObject:
   - component: {fileID: 2111459313}
   - component: {fileID: 2111459312}
   m_Layer: 5
-  m_Name: NextMonthButton
+  m_Name: NextDayButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9394,7 +9474,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2022297346}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: NextMonth
+        m_MethodName: NextDay
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
