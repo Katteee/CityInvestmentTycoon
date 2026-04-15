@@ -495,9 +495,10 @@ public class GameManager : MonoBehaviour
         if (businessPriceText != null)
         {
             businessPriceText.text =
-                "Stock: " + selectedBusiness.stock + "/" + selectedBusiness.stockCapacity +
-                "\nCustomers: " + selectedBusiness.lastDayCustomers +
-                "\nSold: " + selectedBusiness.lastDayUnitsSold;
+            "Stock: " + selectedBusiness.stock + "/" + selectedBusiness.stockCapacity +
+            "\nVehicles: " + selectedBusiness.deliveryVehicles +
+            "\nCustomers: " + selectedBusiness.lastDayCustomers +
+            "\nSold: " + selectedBusiness.lastDayUnitsSold;
         }
 
         if (businessProfitText != null)
@@ -659,6 +660,34 @@ public void FireEmployeeSelectedBusiness()
     if (selectedBusiness.FireEmployee())
     {
         currentEventName = "Fired employee";
+        UpdateSelectedBusinessUI();
+        UpdateUI();
+        SaveGame();
+    }
+}
+
+public void BuyStockSelectedBusiness()
+{
+    if (isGameOver || selectedBusiness == null)
+        return;
+
+    if (selectedBusiness.BuyStock(20))
+    {
+        currentEventName = "Bought stock";
+        UpdateSelectedBusinessUI();
+        UpdateUI();
+        SaveGame();
+    }
+}
+
+public void BuyVehicleSelectedBusiness()
+{
+    if (isGameOver || selectedBusiness == null)
+        return;
+
+    if (selectedBusiness.BuyVehicle())
+    {
+        currentEventName = "Bought vehicle";
         UpdateSelectedBusinessUI();
         UpdateUI();
         SaveGame();
