@@ -504,9 +504,10 @@ public class GameManager : MonoBehaviour
         if (businessProfitText != null)
         {
             businessProfitText.text =
-                "Revenue: " + selectedBusiness.lastDayRevenue.ToString("F0") +
-                "\nSalaries: " + selectedBusiness.lastDaySalaries.ToString("F0") +
-                "\nProfit: " + selectedBusiness.lastDayProfit.ToString("F0");
+            "Revenue: " + selectedBusiness.lastDayRevenue.ToString("F0") +
+            "\nSalaries: " + selectedBusiness.lastDaySalaries.ToString("F0") +
+            "\nProfit: " + selectedBusiness.lastDayProfit.ToString("F0") +
+            "\nRisk: " + (selectedBusiness.bankruptcyRisk * 100f).ToString("F0") + "%";
         }
 
         if (businessUpgradeCostText != null)
