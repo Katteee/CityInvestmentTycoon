@@ -492,22 +492,30 @@ public class GameManager : MonoBehaviour
         if (businessLevelText != null)
             businessLevelText.text = "Lvl " + selectedBusiness.level + " | Emp: " + selectedBusiness.employees;
 
-        if (businessPriceText != null)
-        {
-            businessPriceText.text =
-            "Stock: " + selectedBusiness.stock + "/" + selectedBusiness.stockCapacity +
-            "\nVehicles: " + selectedBusiness.deliveryVehicles +
-            "\nCustomers: " + selectedBusiness.lastDayCustomers +
-            "\nSold: " + selectedBusiness.lastDayUnitsSold;
-        }
+            if (businessPriceText != null)
+      {
+         float sellValue = selectedBusiness.price * (0.6f + selectedBusiness.level * 0.1f);
+
+          businessPriceText.text =
+              "Stock: " + selectedBusiness.stock + "/" + selectedBusiness.stockCapacity +
+              "\nVehicles: " + selectedBusiness.deliveryVehicles +
+              "\nServed: " + selectedBusiness.totalCustomersServed +
+              "\nTotalProfit: " + selectedBusiness.totalProfit.ToString("F0") +
+              "\nRisk: " + (selectedBusiness.bankruptcyRisk * 100f).ToString("F0") + "%" +
+              "\nCustomers: " + selectedBusiness.lastDayCustomers +
+              "\nPrice: " + selectedBusiness.price.ToString("F0") +
+              "\nProduct price: " + selectedBusiness.salePrice.ToString("F0")+
+              "\nSell Value: " + sellValue.ToString("F0") +
+              "\nSold: " + selectedBusiness.lastDayUnitsSold;
+      }
 
         if (businessProfitText != null)
         {
             businessProfitText.text =
             "Revenue: " + selectedBusiness.lastDayRevenue.ToString("F0") +
             "\nSalaries: " + selectedBusiness.lastDaySalaries.ToString("F0") +
-            "\nProfit: " + selectedBusiness.lastDayProfit.ToString("F0") +
-            "\nRisk: " + (selectedBusiness.bankruptcyRisk * 100f).ToString("F0") + "%";
+            "\nProfitLastDay: " + selectedBusiness.lastDayProfit.ToString("F0") +
+            "\nBankruptcyRisk: " + (selectedBusiness.bankruptcyRisk * 100f).ToString("F0") + "%";
         }
 
         if (businessUpgradeCostText != null)
