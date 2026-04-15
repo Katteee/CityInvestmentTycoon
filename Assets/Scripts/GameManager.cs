@@ -637,6 +637,34 @@ public class GameManager : MonoBehaviour
         isGameOver = currentMonth >= maxMonths;
     }
 
+    public void HireEmployeeSelectedBusiness()
+{
+    if (isGameOver || selectedBusiness == null)
+        return;
+
+    if (selectedBusiness.HireEmployee())
+    {
+        currentEventName = "Hired employee";
+        UpdateSelectedBusinessUI();
+        UpdateUI();
+        SaveGame();
+    }
+}
+
+public void FireEmployeeSelectedBusiness()
+{
+    if (isGameOver || selectedBusiness == null)
+        return;
+
+    if (selectedBusiness.FireEmployee())
+    {
+        currentEventName = "Fired employee";
+        UpdateSelectedBusinessUI();
+        UpdateUI();
+        SaveGame();
+    }
+}
+
     public void ResetGame()
     {
         SaveSystem.DeleteSave();
